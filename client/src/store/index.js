@@ -165,9 +165,22 @@ export const useGlobalStore = () => {
         asyncCreateNewList(newList);
     }
 
+    store.createNewSong = function (songInfo) {
+        async function asyncCreateNewSong(id, songInfo){
+            if(!songInfo){songInfo = {"title": "Untitled", "artist": "Unknown", "youTubeId": "yvjvLqfawpk"}} 
+            let response = await api.postSong(id, songInfo)
+            console.log(response)
+        }
+        asyncCreateNewSong(store.currentList._id, songInfo);
+    }
+
     store.deleteList = function (id) {
         // MAY NEED TO USE STORE REDUCER HERE TO REFRESH THE PAGE
-        api.deletePlaylist(id)
+        async function asyncDeleteList(id){
+            let response = await api.deletePlaylist(id)
+            console.log(`Success = ${response.data.success}`)
+        }
+        asyncDeleteList(id)
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS

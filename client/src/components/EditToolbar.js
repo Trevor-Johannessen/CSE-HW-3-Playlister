@@ -26,9 +26,10 @@ function EditToolbar() {
     }
     function handleAdd() {
         store.currentList ? console.log("In a List") : console.log("Not in a list")
-        
         if(!store.currentList){ // LOGIC FOR ADDING NEW LIST
             store.createNewList();
+        }else{ // LOGIC FOR ADDING NEW SONG
+            store.createNewSong();
         }
 
     }

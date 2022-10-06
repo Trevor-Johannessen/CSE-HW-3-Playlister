@@ -93,18 +93,18 @@ deletePlaylist = async(req, res) => {
         }
         return res.status(200).json({success: true})
     }).catch(err => console.log(err))
-   
-
-
-
-    
 }
-
+addSong = async(req, res) => {
+    Playlist.findOneAndUpdate({_id: req.params.id}, {$push: {songs: req.body}}, (err, response) => {
+        err ? console.log(err) : console.log(response); // Yeah it's harder to read but it makes me feel cool
+    })
+}
 
 module.exports = {
     createPlaylist,
     getPlaylists,
     getPlaylistPairs,
     getPlaylistById,
-    deletePlaylist
+    deletePlaylist,
+    addSong
 }
