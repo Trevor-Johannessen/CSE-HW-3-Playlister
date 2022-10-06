@@ -165,6 +165,11 @@ export const useGlobalStore = () => {
         asyncCreateNewList(newList);
     }
 
+    store.deleteList = function (id) {
+        // MAY NEED TO USE STORE REDUCER HERE TO REFRESH THE PAGE
+        api.deletePlaylist(id)
+    }
+
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = function () {
         async function asyncLoadIdNamePairs() {
