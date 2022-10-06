@@ -20,8 +20,17 @@ function EditToolbar() {
         store.redo();
     }
     function handleClose() {
+        console.log("Handle Close Print Statement")
         history.push("/");
         store.closeCurrentList();
+    }
+    function handleAdd() {
+        store.currentList ? console.log("In a List") : console.log("Not in a list")
+        
+        if(!store.currentList){ // LOGIC FOR ADDING NEW LIST
+            store.createNewList();
+        }
+
     }
     let editStatus = false;
     if (store.isListNameEditActive) {
@@ -35,6 +44,7 @@ function EditToolbar() {
                 disabled={editStatus}
                 value="+"
                 className={enabledButtonClass}
+                onClick={handleAdd}
             />
             <input
                 type="button"

@@ -59,6 +59,7 @@ export const useGlobalStore = () => {
             }
             // CREATE A NEW LIST
             case GlobalStoreActionType.CREATE_NEW_LIST: {
+                console.log("Trying to create new list")
                 return setStore({
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
@@ -149,6 +150,19 @@ export const useGlobalStore = () => {
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
             payload: {}
         });
+    }
+
+    store.createNewList = function (newList) {
+        async function asyncCreateNewList(newList){
+            storeReducer({
+                type: GlobalStoreActionType.CREATE_NEW_LIST,
+                payload: {...newList}
+            })
+            let response = await api.postPlaylist({"name": "Untitled Playlist", "songs": []});
+            console.log("ID = " + response.data.playlist._id)
+            store.setCurrentList(response.data.playlist._id)
+        }
+        asyncCreateNewList(newList);
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
