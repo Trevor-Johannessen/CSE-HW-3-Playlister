@@ -25,6 +25,8 @@ export const GlobalStoreActionType = {
     LOAD_ID_NAME_PAIRS: "LOAD_ID_NAME_PAIRS",
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
+    CREATE_NEW_SONG : "CREATE_NEW_SONG",
+    SET_SONGS: "SET_SONGS"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -71,6 +73,22 @@ export const useGlobalStore = () => {
                     idNamePairs: store.idNamePairs,
                     currentList: payload,
                     newListCounter: store.newListCounter + 1,
+                    listNameActive: false
+                })
+            }
+            case GlobalStoreActionType.CREATE_NEW_SONG: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: payload,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false
+                })
+            }
+            case GlobalStoreActionType.SET_SONGS: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: payload,
+                    newListCounter: store.newListCounter,
                     listNameActive: false
                 })
             }
@@ -172,19 +190,29 @@ export const useGlobalStore = () => {
         asyncCreateNewList(newList);
     }
 
-    store.createNewSong = function (songInfo) {
-        async function asyncCreateNewSong(id, songInfo){
-            if(!songInfo){songInfo = {"title": "Untitled", "artist": "Unknown", "youTubeId": "yvjvLqfawpk"}} 
-            let response = await api.postSong(id, songInfo)
-            console.log(response)
-        }
-        asyncCreateNewSong(store.currentList._id, songInfo);
+    store.createAddSongTransaction = function () {
+        //let transaction = new AddSong_Transaction(store.currentList._id, store.currentList.songs.length, songInfo);
+        let transaction = new AddSong_Transaction(store.currentList, store);
+        tps.addTransaction(transaction);    
     }
 
-    store.createAddSongTransaction = function (songInfo) {
-        let transaction = new AddSong_Transaction(store.currentList._id, songInfo);
-        tps.addTransaction(transaction);
+    store.setSongs = function (newList) {
+        async function asyncSetSong(id, newList){
+            let response = await api.postSong(id, newList.songs)
+            if(response.status === 200){
+                console.log(response.data)
+            }
+        }
+        
+        asyncSetSong(store.currentList._id, newList);
+        console.log("Setting current list to " + JSON.stringify(newList))
+        console.log("Newlists.songs = " + newList.songs)
+        storeReducer({
+            type: GlobalStoreActionType.SET_SONGS,
+            payload: {...newList}
+        }) 
     }
+
 
     store.deleteList = function (id) {
         // MAY NEED TO USE STORE REDUCER HERE TO REFRESH THE PAGE

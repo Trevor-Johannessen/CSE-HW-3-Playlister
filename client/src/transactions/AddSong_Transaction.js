@@ -1,5 +1,7 @@
 import jsTPS_Transaction from "../common/jsTPS.js"
 import api from '../api'
+import { useContext } from 'react'
+import { GlobalStoreContext } from '../store'
 /**
  * DeleteSong_Transaction
  * 
@@ -11,26 +13,33 @@ import api from '../api'
  */
 export default class AddSong_Transaction extends jsTPS_Transaction {
     
-    constructor(initID, initSong, initIndex) {
+    /*
+    constructor(initID, initListLength, initSong, initIndex) {
         super();
-        this.listID = initID 
-        this.songInfo = initSong
-        this.index = initIndex
+        this.listID = initID;
+        this.songInfo = initSong;
+        this.index = initIndex;
+        this.listLength = initListLength;
+    }
+    */
+
+    constructor(initList, initStore) {
+        super();
+        this.list = initList;
+        this.store = initStore
+        //this.store = useContext(GlobalStoreContext);
     }
 
     // DELETE SONG AT GIVEN INDEX FROM LIST
     doTransaction() {
-        async function asyncCreateNewSong(id, songInfo){
-            if(!songInfo){songInfo = {"title": "Untitled", "artist": "Unknown", "youTubeId": "yvjvLqfawpk"}} 
-            let response = await api.postSong(id, songInfo)
-            console.log(response)
-        }
-        asyncCreateNewSong(this.listID, this.songInfo);
+        this.list.songs.push({"title": "Untitled", "artist": "Unknown", "youTubeId": "yvjvLqfawpk"})
+        this.store.setSongs(this.list)
     }
     
-    // RESTORE DELETED SONG AT LAST KNOWN INDEX
     undoTransaction() {
         console.log("UNDOING ADD TRANSACTION")
-        //this.app.deleteSong(this.app.state.currentList.songs.length-1)
+        this.list.songs.pop()
+        console.log(this.list.songs.length)
+        this.store.setSongs(this.list);
     }
 }
