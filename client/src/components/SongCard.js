@@ -1,10 +1,17 @@
 import React, { useContext, useState } from 'react'
 import { GlobalStoreContext } from '../store'
 
+
+
 function SongCard(props) {
     const { store } = useContext(GlobalStoreContext);
 
     const { song, index } = props;
+
+    function handleDelete(){
+        store.createDeleteSongTransaction(index);
+    }
+
     let cardClass = "list-card unselected-list-card";
     return (
         <div
@@ -23,6 +30,7 @@ function SongCard(props) {
                 type="button"
                 id={"remove-song-" + index}
                 className="list-card-button"
+                onClick={handleDelete}
                 value={"\u2715"}
             />
         </div>

@@ -1,11 +1,11 @@
 import { createContext, useState } from 'react'
 import jsTPS from '../common/jsTPS'
 import api from '../api'
+
 // OUR TRANSACTIONS
-//import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
-//import DeleteSong_Transaction from './transactions/DeleteSong_Transaction.js';
-//import EditSong_Transaction from './transactions/EditSong_Transaction.js';
 import AddSong_Transaction from '../transactions/AddSong_Transaction';
+import DeleteSong_Transaction from '../transactions/DeleteSong_Transaction';
+
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -194,6 +194,11 @@ export const useGlobalStore = () => {
         //let transaction = new AddSong_Transaction(store.currentList._id, store.currentList.songs.length, songInfo);
         let transaction = new AddSong_Transaction(store.currentList, store);
         tps.addTransaction(transaction);    
+    }
+
+    store.createDeleteSongTransaction = function (index) {
+        let transaction = new DeleteSong_Transaction(store.currentList, store, index)
+        tps.addTransaction(transaction);
     }
 
     store.setSongs = function (newList) {
