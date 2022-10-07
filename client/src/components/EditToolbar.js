@@ -29,7 +29,8 @@ function EditToolbar() {
         if(!store.currentList){ // LOGIC FOR ADDING NEW LIST
             store.createNewList();
         }else{ // LOGIC FOR ADDING NEW SONG
-            store.createNewSong();
+            //store.createNewSong();
+            store.createAddSongTransaction();
         }
 
     }

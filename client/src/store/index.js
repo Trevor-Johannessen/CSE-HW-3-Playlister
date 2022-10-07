@@ -1,6 +1,11 @@
 import { createContext, useState } from 'react'
 import jsTPS from '../common/jsTPS'
 import api from '../api'
+// OUR TRANSACTIONS
+//import MoveSong_Transaction from './transactions/MoveSong_Transaction.js';
+//import DeleteSong_Transaction from './transactions/DeleteSong_Transaction.js';
+//import EditSong_Transaction from './transactions/EditSong_Transaction.js';
+import AddSong_Transaction from '../transactions/AddSong_Transaction';
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -8,6 +13,8 @@ export const GlobalStoreContext = createContext({});
     
     @author McKilla Gorilla
 */
+
+
 
 // THESE ARE ALL THE TYPES OF UPDATES TO OUR GLOBAL
 // DATA STORE STATE THAT CAN BE PROCESSED
@@ -172,6 +179,11 @@ export const useGlobalStore = () => {
             console.log(response)
         }
         asyncCreateNewSong(store.currentList._id, songInfo);
+    }
+
+    store.createAddSongTransaction = function (songInfo) {
+        let transaction = new AddSong_Transaction(store.currentList._id, songInfo);
+        tps.addTransaction(transaction);
     }
 
     store.deleteList = function (id) {
