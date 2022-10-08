@@ -25,7 +25,6 @@ function EditToolbar() {
         store.closeCurrentList();
     }
     function handleAdd() {
-        store.currentList ? console.log("In a List") : console.log("Not in a list")
         if(!store.currentList){ // LOGIC FOR ADDING NEW LIST
             store.createNewList();
         }else{ // LOGIC FOR ADDING NEW SONG
@@ -37,6 +36,13 @@ function EditToolbar() {
     if (store.isListNameEditActive) {
         editStatus = true;
     }
+
+    let addButton = "playlister-button"
+    let closeButton = "playlister-button"
+    if(!store.currentList){
+        closeButton += "-disabled"
+    }
+
     return (
         <span id="edit-toolbar">
             <input
@@ -44,7 +50,7 @@ function EditToolbar() {
                 id='add-song-button'
                 disabled={editStatus}
                 value="+"
-                className={enabledButtonClass}
+                className={addButton}
                 onClick={handleAdd}
             />
             <input
@@ -68,7 +74,7 @@ function EditToolbar() {
                 id='close-button'
                 disabled={editStatus}
                 value="&#x2715;"
-                className={enabledButtonClass}
+                className={closeButton}
                 onClick={handleClose}
             />
         </span>);

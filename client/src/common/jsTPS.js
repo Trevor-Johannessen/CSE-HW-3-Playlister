@@ -165,6 +165,20 @@ export default class jsTPS {
             transaction.doTransaction();
             this.mostRecentTransaction++;
             this.performingDo = false;
+
+
+            if(this.hasTransactionToRedo())
+                document.getElementById("redo-button").setAttribute("class", "playlister-button")
+            else{
+                document.getElementById("redo-button").setAttribute("class", "playlister-button-disabled")
+            }
+            if(this.hasTransactionToUndo())
+                document.getElementById("undo-button").setAttribute("class", "playlister-button")
+            else{
+                document.getElementById("undo-button").setAttribute("class", "playlister-button-disabled")
+            }
+
+
         }
     }
 
@@ -179,6 +193,18 @@ export default class jsTPS {
             transaction.undoTransaction();
             this.mostRecentTransaction--;
             this.performingUndo = false;
+
+
+            if(this.hasTransactionToRedo())
+                document.getElementById("redo-button").setAttribute("class", "playlister-button")
+            else{
+                document.getElementById("redo-button").setAttribute("class", "playlister-button-disabled")
+            }
+            if(this.hasTransactionToUndo())
+                document.getElementById("undo-button").setAttribute("class", "playlister-button")
+            else{
+                document.getElementById("undo-button").setAttribute("class", "playlister-button-disabled")
+            }
         }
     }
 

@@ -8,8 +8,28 @@ function SongCard(props) {
 
     const { song, index } = props;
 
-    function handleDelete(){
+    let handleDelete = () => {
         store.createDeleteSongTransaction(index);
+    }
+
+    let handleDragStart = (event) => {
+        console.log("Drag Start")
+        event.dataTransfer.setData("song", event.target.id);
+    }
+    let handleDrop = (event) => {
+        console.log("Hit Drop")
+        event.preventDefault();
+        let target = event.target;
+        let targetId = target.id;
+        targetId = targetId.substring(target.id.indexOf("-") + 1);
+        let sourceId = event.dataTransfer.getData("song");
+        sourceId = sourceId.substring(sourceId.indexOf("-") + 1);
+
+        console.log(`IDs:\nTargetID = ${targetId}\nSourceID = ${sourceId}`)
+
+        // ASK THE MODEL TO MOVE THE DATA
+        if(sourceId !== targetId)
+            store.createMoveSongTransaction(Number(sourceId[0]), Number(targetId[0])) // id: 2-song -> 2
     }
 
     let cardClass = "list-card unselected-list-card";
@@ -18,6 +38,13 @@ function SongCard(props) {
             key={index}
             id={'song-' + index + '-card'}
             className={cardClass}
+            onDragStart={handleDragStart}
+            onDragOver={(e) => {
+                e.stopPropagation();
+                e.preventDefault();
+            }}
+            onDrop={handleDrop}
+            draggable="true"
         >
             {index + 1}.
             <a

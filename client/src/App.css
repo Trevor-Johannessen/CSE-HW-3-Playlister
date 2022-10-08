@@ -152,6 +152,19 @@ input {
   color: var(--swatch-neutral);
 }
 
+
+.playlister-button-disabled {
+  font-size:25pt;
+  width: 40px;
+  border-width: 1px;
+  border-color: black;
+  border-style: solid;
+  box-shadow: 2px 4px #888888;
+  border-radius: 5px;
+  background-color: lightgrey;
+  cursor: not-allowed;
+}
+
 /* THIS STYLE SHEET MANAGES STYLE FOR OUR MODAL, i.e. DIALOG BOX */
 
 .modal {

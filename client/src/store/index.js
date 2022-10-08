@@ -5,6 +5,7 @@ import api from '../api'
 // OUR TRANSACTIONS
 import AddSong_Transaction from '../transactions/AddSong_Transaction';
 import DeleteSong_Transaction from '../transactions/DeleteSong_Transaction';
+import MoveSong_Transaction from '../transactions/MoveSong_Transaction'
 
 export const GlobalStoreContext = createContext({});
 /*
@@ -201,6 +202,11 @@ export const useGlobalStore = () => {
         tps.addTransaction(transaction);
     }
 
+    store.createMoveSongTransaction = function (sourceId, targetId) {
+        let transaction = new MoveSong_Transaction(store.currentList, sourceId, targetId, store);
+        tps.addTransaction(transaction)
+    }
+
     store.setSongs = function (newList) {
         async function asyncSetSong(id, newList){
             let response = await api.postSong(id, newList.songs)
@@ -263,6 +269,13 @@ export const useGlobalStore = () => {
         }
         asyncSetCurrentList(id);
     }
+
+    store.setIsListNameEditActive = function() {
+        storeReducer({
+            type: GlobalStoreActionType.SET_LIST_NAME_EDIT_ACTIVE
+        });
+    }
+
     store.getPlaylistSize = function() {
         return store.currentList.songs.length;
     }
