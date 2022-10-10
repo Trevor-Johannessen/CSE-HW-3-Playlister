@@ -7,6 +7,8 @@ import AddSong_Transaction from '../transactions/AddSong_Transaction';
 import DeleteSong_Transaction from '../transactions/DeleteSong_Transaction';
 import MoveSong_Transaction from '../transactions/MoveSong_Transaction'
 
+
+
 export const GlobalStoreContext = createContext({});
 /*
     This is our global data store. Note that it uses the Flux design pattern,
@@ -27,7 +29,9 @@ export const GlobalStoreActionType = {
     SET_CURRENT_LIST: "SET_CURRENT_LIST",
     SET_LIST_NAME_EDIT_ACTIVE: "SET_LIST_NAME_EDIT_ACTIVE",
     CREATE_NEW_SONG : "CREATE_NEW_SONG",
-    SET_SONGS: "SET_SONGS"
+    SET_SONGS: "SET_SONGS",
+    MARK_LIST_FOR_DELETION: "MARK_LIST_FOR_DELETION",
+    DELETE_LIST: "DELETE_LIST"
 }
 
 // WE'LL NEED THIS TO PROCESS TRANSACTIONS
@@ -77,6 +81,15 @@ export const useGlobalStore = () => {
                     listNameActive: false
                 })
             }
+            case GlobalStoreActionType.DELETE_LIST: {
+                store.idNamePairs = store.idNamePairs.filter((i) => i._id !== payload)
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: null,
+                    newListCounter: store.newListCounter - 1,
+                    listNameActive: false
+                })
+            }
             case GlobalStoreActionType.CREATE_NEW_SONG: {
                 return setStore({
                     idNamePairs: store.idNamePairs,
@@ -106,7 +119,7 @@ export const useGlobalStore = () => {
             case GlobalStoreActionType.MARK_LIST_FOR_DELETION: {
                 return setStore({
                     idNamePairs: store.idNamePairs,
-                    currentList: null,
+                    currentList: payload,
                     newListCounter: store.newListCounter,
                     listNameActive: false
                 });
@@ -224,14 +237,53 @@ export const useGlobalStore = () => {
         }) 
     }
 
+    store.getListName = () => {
+        return "Hello World"
+    }
 
-    store.deleteList = function (id) {
+
+    store.showDeleteListModal = function (id) {
+        console.log("Showing Delete List Modal to delete list " + id);
+        
+        async function asyncMarkList(id) {
+            let response = await api.getPlaylistById(id);
+            if (response.data.success) {
+                let playlist = response.data.playlist;
+
+                if (response.data.success) {
+                    storeReducer({
+                        type: GlobalStoreActionType.MARK_LIST_FOR_DELETION,
+                        payload: playlist
+                    });
+                }
+                let modal = document.getElementById("delete-list-modal");
+                modal.classList.add("is-visible");
+            }
+        }
+        asyncMarkList(id);
+    }
+
+    store.hideDeleteListModal= function () {
+        let modal = document.getElementById("delete-list-modal");
+        modal.classList.remove("is-visible");
+        storeReducer({
+            type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
+        });
+    }
+
+
+    store.deleteList = function () {
         // MAY NEED TO USE STORE REDUCER HERE TO REFRESH THE PAGE
         async function asyncDeleteList(id){
             let response = await api.deletePlaylist(id)
             console.log(`Success = ${response.data.success}`)
+            storeReducer({
+                type: GlobalStoreActionType.DELETE_LIST,
+                payload: id
+            });
         }
-        asyncDeleteList(id)
+        asyncDeleteList(store.currentList._id)
+        store.hideDeleteListModal()
     }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
