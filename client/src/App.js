@@ -1,7 +1,7 @@
 import './App.css';
 import { React } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { Banner, ListSelector, PlaylistCards, Statusbar, DeleteListModal } from './components'
+import { Banner, ListSelector, PlaylistCards, Statusbar, DeleteListModal, DeleteSongModal } from './components'
 
 
 /*
@@ -21,6 +21,7 @@ const App = () => {
             </Switch>
             <Statusbar />
             <DeleteListModal />
+            <DeleteSongModal />
         </Router>
     )
 }

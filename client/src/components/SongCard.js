@@ -9,7 +9,8 @@ function SongCard(props) {
     const { song, index } = props;
 
     let handleDelete = () => {
-        store.createDeleteSongTransaction(index);
+        store.showDeleteSongModal(index)
+        //store.createDeleteSongTransaction(index);
     }
 
     let handleDragStart = (event) => {
