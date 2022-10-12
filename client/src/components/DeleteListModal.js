@@ -10,7 +10,7 @@ function DeleteListModal() {
 
     return (
         <div 
-            className="modal" 
+            class="modal" 
             id="delete-list-modal" 
             data-animation="slideInOutLeft">
                 <div class="modal-root" id='verify-delete-list-root'>

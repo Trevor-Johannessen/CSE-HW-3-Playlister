@@ -5,7 +5,8 @@ import api from '../api'
 // OUR TRANSACTIONS
 import AddSong_Transaction from '../transactions/AddSong_Transaction';
 import DeleteSong_Transaction from '../transactions/DeleteSong_Transaction';
-import MoveSong_Transaction from '../transactions/MoveSong_Transaction'
+import MoveSong_Transaction from '../transactions/MoveSong_Transaction';
+import EditSong_Transaction from '../transactions/EditSong_Transaction';
 
 
 
@@ -93,6 +94,24 @@ export const useGlobalStore = () => {
                     idNamePairs: store.idNamePairs,
                     currentList: null,
                     newListCounter: store.newListCounter - 1,
+                    listNameActive: false,
+                    songForDeletion: null
+                })
+            }
+            case GlobalStoreActionType.MARK_LIST_FOR_EDIT: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: store.currentList,
+                    newListCounter: store.newListCounter,
+                    listNameActive: false,
+                    songForDeletion: payload
+                })
+            }
+            case GlobalStoreActionType.EDIT_LIST: {
+                return setStore({
+                    idNamePairs: store.idNamePairs,
+                    currentList: payload,
+                    newListCounter: store.newListCounter,
                     listNameActive: false,
                     songForDeletion: null
                 })
@@ -187,7 +206,7 @@ export const useGlobalStore = () => {
         async function asyncChangeListName(id) {
             let response = await api.getPlaylistById(id);
             if (response.data.success) {
-                let playlist = response.data.playist;
+                let playlist = response.data.playlist;
                 playlist.name = newName;
                 async function updateList(playlist) {
                     response = await api.updatePlaylistById(playlist._id, playlist);
@@ -270,11 +289,6 @@ export const useGlobalStore = () => {
         }) 
     }
 
-    store.getListName = () => {
-        return "Hello World"
-    }
-
-
     store.showDeleteListModal = function (id) {
         async function asyncMarkList(id) {
             let response = await api.getPlaylistById(id);
@@ -335,6 +349,35 @@ export const useGlobalStore = () => {
         });
     }
 
+
+    store.showEditSongModal = function(id) {
+        storeReducer({
+            type: GlobalStoreActionType.MARK_SONG_FOR_EDIT,
+            payload: id
+        });
+
+        document.getElementById("title").value=store.currentList.songs[id].title;
+        document.getElementById("artist").value=store.currentList.songs[id].artist;
+        document.getElementById("url").value=store.currentList.songs[id].youTubeId;
+
+        let modal = document.getElementById("edit-song-modal");
+        modal.classList.add("is-visible");
+    }
+
+    store.hideEditSongModal = function() {
+        let modal = document.getElementById("edit-song-modal");
+        modal.classList.remove("is-visible");
+        storeReducer({
+            type: GlobalStoreActionType.UNMARK_SONG,
+        });
+    }
+
+    store.createEditSongTransaction = function(newSong) {
+        let transaction = new EditSong_Transaction(store.currentList, store, store.songForDeletion, newSong)
+        tps.addTransaction(transaction);
+
+        store.hideEditSongModal();
+    }
 
     // THIS FUNCTION LOADS ALL THE ID, NAME PAIRS SO WE CAN LIST ALL THE LISTS
     store.loadIdNamePairs = function () {

@@ -9,8 +9,12 @@ function SongCard(props) {
     const { song, index } = props;
 
     let handleDelete = () => {
-        store.showDeleteSongModal(index)
+        store.showDeleteSongModal(index);
         //store.createDeleteSongTransaction(index);
+    }
+
+    let handleDbClick = () => {
+        store.showEditSongModal(index);
     }
 
     let handleDragStart = (event) => {
@@ -44,6 +48,7 @@ function SongCard(props) {
                 e.stopPropagation();
                 e.preventDefault();
             }}
+            onDoubleClick={handleDbClick}
             onDrop={handleDrop}
             draggable="true"
         >

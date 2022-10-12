@@ -44,7 +44,7 @@ getPlaylistById = async (req, res) => {
         if (err) {
             return res.status(400).json({ success: false, error: err })
         }
-
+        console.log(list)
         return res.status(200).json({ success: true, playlist: list })
     }).catch(err => console.log(err))
 }
@@ -101,11 +101,18 @@ setSongs = async(req, res) => {
     })
 }
 
+updatePlaylistById = async(req, res) => {
+    Playlist.findOneAndUpdate({_id: req.params.id}, req.body, {new: true}, (err, response) => {
+        return err ? res.status(400).json({success: false, error: err}) : SSres.status(200).json({ success: true, data: response})
+    })
+}
+
 module.exports = {
     createPlaylist,
     getPlaylists,
     getPlaylistPairs,
     getPlaylistById,
     deletePlaylist,
-    setSongs
+    setSongs,
+    updatePlaylistById
 }

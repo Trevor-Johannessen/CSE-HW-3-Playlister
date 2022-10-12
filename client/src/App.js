@@ -1,7 +1,7 @@
 import './App.css';
 import { React } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import { Banner, ListSelector, PlaylistCards, Statusbar, DeleteListModal, DeleteSongModal } from './components'
+import { Banner, ListSelector, PlaylistCards, Statusbar, DeleteListModal, DeleteSongModal, EditSongModal } from './components'
 
 
 /*
@@ -15,13 +15,14 @@ const App = () => {
     return (
         <Router>
             <Banner />
+            <DeleteListModal />
+            <DeleteSongModal />
+            <EditSongModal />
             <Switch>
                 <Route path="/" exact component={ListSelector} />
                 <Route path="/playlist/:id" exact component={PlaylistCards} />
             </Switch>
             <Statusbar />
-            <DeleteListModal />
-            <DeleteSongModal />
         </Router>
     )
 }
