@@ -57,16 +57,18 @@ function EditToolbar() {
                 type="button"
                 id='undo-button'
                 disabled={editStatus}
+                className="playlister-button-disabled"
                 value="⟲"
-                className={enabledButtonClass}
+                //className={enabledButtonClass}
                 onClick={handleUndo}
             />
             <input
                 type="button"
                 id='redo-button'
                 disabled={editStatus}
+                className="playlister-button-disabled"
                 value="⟳"
-                className={enabledButtonClass}
+                //className={enabledButtonClass}
                 onClick={handleRedo}
             />
             <input

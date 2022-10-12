@@ -239,6 +239,9 @@ export const useGlobalStore = () => {
             type: GlobalStoreActionType.CLOSE_CURRENT_LIST,
             payload: {}
         });
+        tps.clearAllTransactions();
+        document.getElementById("undo-button").setAttribute("class", "playlister-button-disabled")
+        document.getElementById("redo-button").setAttribute("class", "playlister-button-disabled")
     }
 
     store.createNewList = function (newList) {
