@@ -19,7 +19,7 @@ function DeleteSongModal() {
                     </div>
                     <div class="modal-center">
                         <div id="delete-song-modal-center" class="modal-center-content">
-                            Are you sure you wish to permanently delete {(store.currentList && store.songForDeletion) ? store.currentList.songs[store.songForDeletion].title : ""}
+                            Are you sure you wish to permanently delete {(store.currentList && store.songForDeletion != null && store.songForDeletion>=0) ? store.currentList.songs[store.songForDeletion].title : ""}
                         </div>
                     </div>
                     <div class="modal-south">

@@ -336,6 +336,7 @@ export const useGlobalStore = () => {
 
 
     store.showDeleteSongModal = function (id) {
+        console.log("ID = " + id)
         storeReducer({
             type: GlobalStoreActionType.MARK_SONG_FOR_DELETION,
             payload: id
