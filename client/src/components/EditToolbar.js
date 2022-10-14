@@ -39,8 +39,11 @@ function EditToolbar() {
 
     let addButton = "playlister-button"
     let closeButton = "playlister-button"
-    if(!store.currentList){
+    if(!store.currentList || store.modalActive){
         closeButton += "-disabled"
+    }
+    if(store.modalActive){
+        addButton += "-disabled"
     }
 
     return (
