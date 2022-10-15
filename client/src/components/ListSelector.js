@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect} from 'react'
 import { useHistory } from 'react-router-dom'
 import ListCard from './ListCard.js'
 import { GlobalStoreContext } from '../store'
@@ -9,14 +9,16 @@ import { GlobalStoreContext } from '../store'
 */
 
 
+
+
 const ListSelector = () => {
     const { store } = useContext(GlobalStoreContext);
     store.history = useHistory();
 
     useEffect(() => {
-        store.loadIdNamePairs();
+        store.loadIdNamePairs()
     }, []);
-
+    
     function handleCreateNewList() {
         store.createNewList();
     }

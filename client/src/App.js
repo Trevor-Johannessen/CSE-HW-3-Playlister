@@ -1,5 +1,5 @@
 import './App.css';
-import { React } from 'react'
+import { React, useEffect } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { Banner, ListSelector, PlaylistCards, Statusbar, DeleteListModal, DeleteSongModal, EditSongModal } from './components'
 
@@ -9,8 +9,9 @@ import { Banner, ListSelector, PlaylistCards, Statusbar, DeleteListModal, Delete
     
     @author McKilla Gorilla
 */
-const App = () => {
 
+
+const App = () => {
 
     return (
         <Router>
