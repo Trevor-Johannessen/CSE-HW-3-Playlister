@@ -255,7 +255,8 @@ export const useGlobalStore = () => {
                 updateList(playlist);
             }
         }
-        asyncChangeListName(id);
+        if(newName)
+            asyncChangeListName(id);
     }
 
     // THIS FUNCTION PROCESSES CLOSING THE CURRENTLY LOADED LIST
